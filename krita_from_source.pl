@@ -39,6 +39,11 @@ UBUNTU
     return;
 }
 
+sub _print_time {
+    my $now_string = strftime "%Y-%m-%d %H:%M:%S", localtime;
+    return "$now_string - ";
+}
+
 sub detect_distro {
     my $source = '/etc/issue';
     if ( -r $source ) {
@@ -162,6 +167,7 @@ sub get_source_tar_gz {
     if (@files) {
         _extract_tar_gz( $files[0] );
         chdir './calligra/';
+        print _print_time, "Initializing git repo.\n";
         ( $stdout, $stderr ) = qxx('./initrepo.sh');
         chdir '..';
     }
@@ -177,11 +183,6 @@ sub get_source_tar_gz {
     print "###\n$stdout\n$stderr\n###\n";
 
     return;
-}
-
-sub _print_time {
-    my $now_string = strftime "%Y-%m-%d %H:%M:%S", localtime;
-    return "$now_string - ";
 }
 
 sub run {
